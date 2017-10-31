@@ -14,17 +14,17 @@ class TF_DistributedServer:
 
     Run:
         - Machine A (with/without GPU):
-            Run ps: python3 server.py, with the following changes in machines.json:
+            Run ps: python3 trainer.py, with the following changes in machines.json:
                 job_name="ps", task_index="0"
             # Run worker (in other terminal) on machine A only if
             # it has GPU, else skip this step.
-            Run worker: python3 server.py, with the following changes in machines.json:
+            Run worker: python3 trainer.py, with the following changes in machines.json:
                 job_name="worker", task_index="0"
         - Machine B:
-            Run worker: python3 server.py, with the following changes in machines.json:
+            Run worker: python3 trainer.py, with the following changes in machines.json:
                 job_name="worker", task_index="1"
         - Machine C:
-            Run worker: python3 server.py, with the following changes in machines.json:
+            Run worker: python3 trainer.py, with the following changes in machines.json:
                 job_name="worker", task_index="2"
 
     Note:
