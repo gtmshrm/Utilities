@@ -1,0 +1,3 @@
+sudo apt-get install -y libav-tools # try without installing libav-tools first
+sudo pip3 install youtube_dl
+sudo pip3 install pytube
