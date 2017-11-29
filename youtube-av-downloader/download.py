@@ -61,8 +61,8 @@ class ContentDownloader(object):
     @_youtube
     def audio(self):
         """
-        Convert default audio format which is '.m4a' to '.mp3' and
-        '.m4r' using `ffmpeg` and save it to destination directory.
+        Convert default audio format to '.mp3' and '.m4r'
+        using `ffmpeg` and save it to destination directory.
         Remove '.m4a' file.
         """
         for downloadedFile in glob.glob('*'+self._defFormat):
