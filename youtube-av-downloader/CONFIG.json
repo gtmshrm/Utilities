@@ -1,0 +1,26 @@
+{
+  "links_path": "./LINKS.txt",
+  "type": "audio",
+  "destination_dir": "/Users/gautamsharma/Downloads",
+  "_default_op_format": {
+    "audio": ".m4a",
+    "video": ".mp4",
+    "torrent": "None"
+  },
+  "_opts": {
+    "audio": {
+      "format": "bestaudio/best",
+      "preprocessors": [{
+          "key": "FFmpegExtractAudio",
+          "preferredcodec": "m4a",
+          "preferredquality": "192"
+      }]},
+    "video": {
+      "preprocessors": [{
+          "preferredcodec": "mp4"
+      }]},
+    "torrent": {
+      "mode": "torrent_file"
+    }
+  }
+}

@@ -1,3 +1,10 @@
+#!/bin/bash
 sudo apt-get install -y libav-tools # try without installing libav-tools first
+
+sudo apt-get install ffmpeg
+
 sudo pip3 install youtube_dl
-sudo pip3 install pytube
+
+git clone https://github.com/effigies/BitTornado
+cd BitTornado
+python3 setup.py install
