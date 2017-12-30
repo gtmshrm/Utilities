@@ -1,0 +1,5 @@
+# mkv to mp4
+ffmpeg -i input.mkv -c:v libx264 -c:a aac out.mp4
+
+# webm to mp4
+ffmpeg -fflags +genpts -i input.webm -r 24 out.mp4
