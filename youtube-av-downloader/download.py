@@ -82,6 +82,17 @@ class ContentDownloader(object):
         """
         Move video files to destination directory.
         """
+        # convert webm, mkv to mp4
+        for downloadedFile in glob.glob('*.mkv'):
+            filename = downloadedFile.strip('.mkv')
+            os.system('ffmpeg -i "{}" -c:v libx264 -c:a aac "{}"'.format(
+                    downloadedFile, filename+self._defFormat))
+        for downloadedFile in glob.glob('*.webm'):
+            filename = downloadedFile.strip('.webm')
+            os.system('ffmpeg -fflags +genpts -i "{}" -r 24 "{}"'.format(
+                    downloadedFile, filename+self._defFormat))
+
+        # move files to destination dir
         for downloadedFile in glob.glob('*'+self._defFormat):
             os.rename(downloadedFile,
                       os.path.join(self._destinationDir, downloadedFile))
