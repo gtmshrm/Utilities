@@ -1,0 +1,1 @@
+<Paste info containing Steam IDs of users playing on any steam-based server. For eg: In CS 1.6, paste the output of 'rcon users' command>
