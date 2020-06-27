@@ -56,14 +56,13 @@ class Subtitles:
     def gen_file_metadata_summary(self, metadata):
         """
         Function to generate summary of metadata in the format
-        {title}.S{season}E{episode}.{quality} and return it.
+        '{title}.S{season}E{episode}' and return it.
         """
         title = metadata['title']
         season = str(metadata['season']).zfill(2)
         episode = str(metadata['episode']).zfill(2)
-        quality = metadata['quality']
 
-        file_metadata_summary = f'{title}.S{season}E{episode}.{quality}'
+        file_metadata_summary = f'{title}.S{season}E{episode}'
         return file_metadata_summary
 
     def cache_file_metadata(self, filenames):
