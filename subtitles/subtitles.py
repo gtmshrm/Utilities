@@ -21,10 +21,14 @@ class Subtitles:
         temp_storage_dir:       Path to directory to be used as storage
                                 for saving files temporarily.
         """
+        self._video_file_formats = ['avi', 'mp4', 'mov', 'mkv', 'mk3d', 'webm', \
+                                    'ts', 'mts', 'm2ts', 'ps', 'vob', 'evo', 'mpeg', 'mpg', \
+                                    'm1v', 'm2p', 'm2v', 'm4v', 'movhd', 'movx', 'qt', \
+                                    'mxf', 'ogg', 'ogm', 'ogv', 'rm', 'rmvb', 'flv', 'swf', \
+                                    'asf', 'wm', 'wmv', 'wmx', 'divx', 'x264', 'xvid']
         self.subtitle_zip_files_dir = pathlib.Path(subtitle_zip_files_dir)
         self.target_dir = pathlib.Path(target_dir)
         self.temp_storage_dir = pathlib.Path(temp_storage_dir)
-        self._video_file_formats = ['3gp', 'avi', 'mkv', 'mp4', 'webm']
 
     def get_target_filenames(self):
         """
