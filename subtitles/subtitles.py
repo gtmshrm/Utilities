@@ -4,6 +4,7 @@ import logging
 import pathlib
 import shutil
 from PTN import parse
+from re import sub
 from zipfile import ZipFile
 
 
@@ -60,7 +61,7 @@ class Subtitles:
         Function to generate summary of metadata in the format
         '{title}.S{season}E{episode}' and return it.
         """
-        title = metadata['title']
+        title = sub('[\W_]+', '', metadata['title'].lower())
         season = str(metadata['season']).zfill(2)
         episode = str(metadata['episode']).zfill(2)
 
