@@ -21,11 +21,11 @@ class Subtitles:
         temp_storage_dir:       Path to directory to be used as storage
                                 for saving files temporarily.
         """
-        self._video_file_formats = ('avi', 'mp4', 'mov', 'mkv', 'mk3d', 'webm', \
-                                    'ts', 'mts', 'm2ts', 'ps', 'vob', 'evo', 'mpeg', 'mpg', \
-                                    'm1v', 'm2p', 'm2v', 'm4v', 'movhd', 'movx', 'qt', \
-                                    'mxf', 'ogg', 'ogm', 'ogv', 'rm', 'rmvb', 'flv', 'swf', \
-                                    'asf', 'wm', 'wmv', 'wmx', 'divx', 'x264', 'xvid')
+        self._video_formats = ('avi', 'mp4', 'mov', 'mkv', 'mk3d', 'webm', \
+                               'ts', 'mts', 'm2ts', 'ps', 'vob', 'evo', 'mpeg', 'mpg', \
+                               'm1v', 'm2p', 'm2v', 'm4v', 'movhd', 'movx', 'qt', \
+                               'mxf', 'ogg', 'ogm', 'ogv', 'rm', 'rmvb', 'flv', 'swf', \
+                               'asf', 'wm', 'wmv', 'wmx', 'divx', 'x264', 'xvid')
 
         self.subtitle_zip_files_dir = pathlib.Path(subtitle_zip_files_dir)
         self.target_dir = pathlib.Path(target_dir)
@@ -36,7 +36,7 @@ class Subtitles:
         Function to get a list a file names which are to be
         linked to corresponding subtitle file.
         """
-        target_filenames = (fn.name for ext in self._video_file_formats \
+        target_filenames = (fn.name for ext in self._video_formats \
                             for fn in self.target_dir.glob(f"*.{ext}"))
         return target_filenames
 
@@ -50,7 +50,9 @@ class Subtitles:
            filenames = zip_obj.namelist()
 
            subtitle_filenames = [fn for fn in filenames if fn.endswith('.srt')]
-           map(lambda x: zip_obj.extract(x, self.temp_storage_dir), subtitle_filenames)
+           for fn in subtitle_filenames:
+               zip_obj.extract(fn, self.temp_storage_dir)
+
         return subtitle_filenames
 
     def gen_file_metadata_summary(self, metadata):
@@ -83,12 +85,11 @@ class Subtitles:
         Function to remove a list of files from a temporary
         storage directory.
         """
-        try:
-            map(lambda x: pathlib.Path(pathlib.PurePath(
-                                        self.temp_storage_dir, x)).unlink(), 
-                                        filenames)
-        except FileNotFoundError:
-            pass
+        for fn in filenames:
+            try:
+                pathlib.Path(pathlib.PurePath(self.temp_storage_dir, fn)).unlink()
+            except FileNotFoundError:
+                pass
 
     def link_subtitles_to_files(self):
         """
@@ -98,15 +99,16 @@ class Subtitles:
         subtitle_filenames = []
 
         zip_filenames = self.subtitle_zip_files_dir.glob('*.zip')
-        map(lambda x: subtitle_filenames.extend(self.unzip_subtitles(x)), zip_filenames)
+        for zip_fn in zip_filenames:
+            subtitle_filenames.extend(self.unzip_subtitles(zip_fn))
 
         subtitle_metadata = self.cache_file_metadata(subtitle_filenames)
         target_metadata = self.cache_file_metadata(target_filenames)
 
         for target_file_metadata_summary in target_metadata:
             try:
-                source_filename = subtitle_metadata[target_file_metadata_summary]['fn']+'.srt'
-                target_filename = target_metadata[target_file_metadata_summary]['fn']+'.srt'
+                source_filename = f'{subtitle_metadata[target_file_metadata_summary]["fn"]}.srt'
+                target_filename = f'{target_metadata[target_file_metadata_summary]["fn"]}.srt'
                 source_filepath = pathlib.PurePath(self.temp_storage_dir, source_filename)
                 target_filepath = pathlib.PurePath(self.target_dir, target_filename)
                 shutil.move(source_filepath, target_filepath)
@@ -130,5 +132,8 @@ if __name__ == '__main__':
             default='/tmp', help='path to directory to be used for temporary storage')
     args = parser.parse_args()
 
-    subittle_op = Subtitles(args.subtitle_zip_files_dir, args.target_dir, args.temp_storage_dir)
+    subittle_op = Subtitles(
+                       args.subtitle_zip_files_dir, 
+                       args.target_dir, 
+                       args.temp_storage_dir)
     subittle_op.link_subtitles_to_files()
